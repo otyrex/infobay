@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "target": "theinfobay",
+    "site": "theinfobay",
     "public": ".",
     "ignore": [
       "firebase.json",
