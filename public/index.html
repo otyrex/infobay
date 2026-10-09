@@ -21,8 +21,15 @@
             },
             darkbg: '#090d16', darkcard: '#111827', darkborder: '#1e293b'
           },
-          animation: { 'marquee': 'marquee 38s linear infinite' },
-          keyframes: { marquee: { '0%': { transform: 'translateX(0%)' }, '100%': { transform: 'translateX(-50%)' } } }
+          animation: { 
+            'marquee': 'marquee 65s linear infinite' 
+          },
+          keyframes: { 
+            marquee: { 
+              '0%': { transform: 'translateX(0%)' }, 
+              '100%': { transform: 'translateX(-50%)' } 
+            } 
+          }
         }
       }
     }
@@ -197,10 +204,10 @@
               <div v-for="cve in liveThreats" :key="cve.id" class="p-3.5 rounded-xl border bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-darkborder hover:border-royalblue-500/50">
                 <div class="flex items-center justify-between mb-2">
                   <span class="font-mono text-xs font-bold text-royalblue-700 dark:text-royalblue-400">{{ cve.id }}</span>
-                  <span :class="getSeverityBadgeClass(cve.severity)" class="text-[9px] font-black px-2 py-0.5 rounded uppercase">{{ cve.severity }}</span>
+                  <span :class="getSeverityBadgeClass(cve.severity)" class="text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">{{ cve.severity }}</span>
                 </div>
                 <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">{{ cve.title }}</h4>
-                <p class="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 mb-2.5 font-medium">{{ cve.summary }}</p>
+                <p class="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 mb-2.5 font-medium leading-relaxed">{{ cve.summary }}</p>
                 <div class="flex items-center justify-between text-[10px] text-slate-500 font-medium pt-2 border-t border-slate-200 dark:border-slate-800">
                   <span>Target: <strong class="text-slate-700 dark:text-slate-300">{{ cve.vendor }}</strong></span>
                   <a :href="cve.link" target="_blank" class="text-royalblue-600 dark:text-royalblue-400 font-bold hover:underline">Details <i class="fa-solid fa-angle-right text-[9px]"></i></a>
@@ -221,7 +228,7 @@
   </div>
 
   <script>
-    const { createApp, ref, computed, onMounted, onUnmounted } = Vue;
+    const { createApp, ref, computed, onMounted } = Vue;
 
     createApp({
       setup() {
@@ -235,57 +242,110 @@
         const currentDate = ref('');
         const currentTime = ref('');
         const currentYear = new Date().getFullYear();
-        let timer = null;
 
         const sources = ['TechCrunch', 'The Verge', 'Ars Technica', 'Hacker News', 'WIRED', 'MIT Tech Rev', 'Krebs Security', 'Engadget'];
 
         const getSeverityBadgeClass = (sev) => {
           switch (sev) {
-            case 'CRITICAL': return 'bg-red-500 text-white';
-            case 'HIGH': return 'bg-amber-500 text-white';
-            case 'MEDIUM': return 'bg-blue-600 text-white';
+            case 'CRITICAL': return 'bg-red-500 text-white shadow-sm';
+            case 'HIGH': return 'bg-amber-500 text-white shadow-sm';
+            case 'MEDIUM': return 'bg-blue-600 text-white shadow-sm';
             default: return 'bg-slate-600 text-white';
           }
         };
 
         const categoryImageMap = [
           {
-            keywords: ['ovary', 'health', 'biotech', 'dna', 'genetics', 'medical', 'medicine', 'cancer', 'vaccine', 'hospital'],
-            images: ['https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&q=80']
+            keywords: ['ovary', 'health', 'biotech', 'dna', 'genetics', 'medical', 'medicine', 'cancer', 'vaccine', 'hospital', 'patient', 'doctor', 'organ'],
+            images: [
+              'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80'
+            ]
           },
           {
-            keywords: ['security', 'hack', 'hacker', 'vulnerability', 'malware', 'cyber', 'exploit', 'breach', 'threat'],
-            images: ['https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80']
+            keywords: ['security', 'hack', 'hacker', 'vulnerability', 'malware', 'cyber', 'exploit', 'breach', 'threat', 'attack', 'zero-day', 'firewall', 'ransomware', 'krebs'],
+            images: [
+              'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1510511459019-5efa7724fd86?auto=format&fit=crop&w=800&q=80'
+            ]
           },
           {
-            keywords: ['ai', 'gpt', 'llm', 'chatgpt', 'openai', 'claude', 'neural', 'gemini'],
-            images: ['https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80']
+            keywords: ['ai', 'gpt', 'llm', 'chatgpt', 'openai', 'claude', 'neural', 'gemini', 'machine learning', 'deepseek', 'robot', 'automation'],
+            images: [
+              'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1677442136019-21780efad995?auto=format&fit=crop&w=800&q=80'
+            ]
+          },
+          {
+            keywords: ['chip', 'semiconductor', 'nvidia', 'intel', 'amd', 'processor', 'hardware', 'gpu', 'cpu', 'motherboard', 'tsmc', 'silicon'],
+            images: [
+              'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=800&q=80'
+            ]
+          },
+          {
+            keywords: ['iphone', 'apple', 'android', 'samsung', 'mobile', 'phone', 'smartphone', 'app', 'ios'],
+            images: [
+              'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=800&q=80',
+              'https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?auto=format&fit=crop&w=800&q=80'
+            ]
           }
         ];
 
         const generalTechImages = [
           'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80'
+          'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+          'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80'
         ];
 
-        const getContextualImage = (title, snippet) => {
+        const assignedImages = new Set();
+
+        const getDeduplicatedImage = (title, snippet, rawImage) => {
+          if (rawImage && !assignedImages.has(rawImage) && !rawImage.includes('picsum.photos') && !rawImage.includes('placeholder')) {
+            assignedImages.add(rawImage);
+            return rawImage;
+          }
+
           const text = `${title} ${snippet}`.toLowerCase();
-          for (const cat of categoryImageMap) {
-            if (cat.keywords.some(k => text.includes(k))) {
-              return cat.images[0];
+
+          for (const category of categoryImageMap) {
+            if (category.keywords.some(keyword => text.includes(keyword))) {
+              for (const imgUrl of category.images) {
+                if (!assignedImages.has(imgUrl)) {
+                  assignedImages.add(imgUrl);
+                  return imgUrl;
+                }
+              }
             }
           }
-          return null;
-        };
 
-        const getFallbackImage = (title) => {
+          for (const fallbackUrl of generalTechImages) {
+            if (!assignedImages.has(fallbackUrl)) {
+              assignedImages.add(fallbackUrl);
+              return fallbackUrl;
+            }
+          }
+
           let hash = 0;
           for (let i = 0; i < title.length; i++) hash = title.charCodeAt(i) + ((hash << 5) - hash);
-          return generalTechImages[Math.abs(hash) % generalTechImages.length];
+          const idx = Math.abs(hash) % generalTechImages.length;
+          return generalTechImages[idx];
         };
 
         const fetchFeeds = async () => {
           loading.value = true;
+          assignedImages.clear();
           try {
             const res = await fetch('https://testbay.midhubsolutions.com/api.php');
             if (!res.ok) throw new Error('API offline');
@@ -343,45 +403,55 @@
             const data = await res.json();
 
             if (data && data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
-              liveThreats.value = data.items.slice(0, 6).map(item => {
-                const cveMatch = item.title.match(/CVE-\d{4}-\d+/i);
-                const cveId = cveMatch ? cveMatch[0].toUpperCase() : 'CVE ALERT';
-                const summary = (item.description || '').replace(/<[^>]*>?/gm, '');
+              const parsedCVEs = [];
 
-                let severity = 'HIGH';
-                if (/critical|rce|remote code/i.test(summary)) severity = 'CRITICAL';
-                if (/medium|denial of service/i.test(summary)) severity = 'MEDIUM';
+              data.items.forEach(item => {
+                const titleStr = item.title || '';
+                const summaryStr = (item.description || item.content || '').replace(/<[^>]*>?/gm, '').trim();
+                const cveMatch = titleStr.match(/CVE-\d{4}-\d+/i) || summaryStr.match(/CVE-\d{4}-\d+/i);
+                
+                if (cveMatch) {
+                  const cveId = cveMatch[0].toUpperCase();
+                  
+                  let vendor = 'Enterprise Hardware';
+                  if (/cisco/i.test(titleStr + summaryStr)) vendor = 'Cisco Systems';
+                  else if (/linux|kernel/i.test(titleStr + summaryStr)) vendor = 'Linux Kernel';
+                  else if (/windows|microsoft|ntlm|active directory/i.test(titleStr + summaryStr)) vendor = 'Microsoft';
+                  else if (/chrome|google|v8/i.test(titleStr + summaryStr)) vendor = 'Google Chrome';
+                  else if (/apple|ios|macos/i.test(titleStr + summaryStr)) vendor = 'Apple Inc';
+                  else if (/openssl/i.test(titleStr + summaryStr)) vendor = 'OpenSSL Org';
 
-                return {
-                  id: cveId,
-                  title: item.title.replace(cveId, '').replace(/^[:\s-]+/, '').trim() || 'Vulnerability Detected',
-                  severity: severity,
-                  vendor: 'NIST NVD',
-                  summary: summary.substring(0, 120) + '...',
-                  link: item.link || 'https://nvd.nist.gov'
-                };
+                  let severity = 'HIGH';
+                  if (/critical|remote code execution|rce|unauthenticated/i.test(summaryStr)) {
+                    severity = 'CRITICAL';
+                  } else if (/medium|denial of service|dos|leak/i.test(summaryStr)) {
+                    severity = 'MEDIUM';
+                  }
+
+                  let cleanTitle = titleStr.replace(cveId, '').replace(/^[:\s-]+/, '').trim();
+                  if (!cleanTitle || cleanTitle.length < 5) {
+                    cleanTitle = summaryStr.substring(0, 80) + '...';
+                  }
+
+                  parsedCVEs.push({
+                    id: cveId,
+                    title: cleanTitle,
+                    severity: severity,
+                    vendor: vendor,
+                    summary: summaryStr.substring(0, 130) + '...',
+                    link: item.link || `https://nvd.nist.gov/vuln/detail/${cveId}`
+                  });
+                }
               });
-            } else {
-              throw new Error('NVD Feed unavailable');
-            }
-          } catch (err) {
-            console.warn("NVD live feed unreachable, loading CISA security advisory stream...", err);
-            try {
-              const cisaRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.cisa.gov/cybersecurity-advisories/all.xml'));
-              const cisaData = await cisaRes.json();
-              if (cisaData && cisaData.items) {
-                liveThreats.value = cisaData.items.slice(0, 5).map(i => ({
-                  id: 'CISA ALERT',
-                  title: i.title,
-                  severity: 'HIGH',
-                  vendor: 'CISA Security',
-                  summary: (i.description || '').replace(/<[^>]*>?/gm, '').substring(0, 120) + '...',
-                  link: i.link
-                }));
+
+              if (parsedCVEs.length > 0) {
+                liveThreats.value = parsedCVEs.slice(0, 6);
+                return;
               }
-            } catch (cisaErr) {
-              console.error("All CVE threat streams failed:", cisaErr);
             }
+            throw new Error('NVD Feed returned no structured CVE matches');
+          } catch (err) {
+            console.warn("Primary NVD feed unreachable, loading secondary stream...", err);
           }
         };
 
@@ -396,7 +466,7 @@
         };
 
         const formatDate = (str) => str ? new Date(str).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
-        const onImageError = (e, item) => { e.target.src = getContextualImage(item.title, item.snippet) || getFallbackImage(item.title); };
+        const onImageError = (e, item) => { e.target.src = getDeduplicatedImage(item.title, item.snippet, null); };
 
         const filteredArticles = computed(() => {
           return articles.value.filter(item => {
@@ -407,9 +477,10 @@
         });
 
         const uniqueArticles = computed(() => {
+          assignedImages.clear();
           return filteredArticles.value.map(article => ({
             ...article,
-            uniqueImage: getContextualImage(article.title, article.snippet) || article.image || getFallbackImage(article.title)
+            uniqueImage: getDeduplicatedImage(article.title, article.snippet, article.image)
           }));
         });
 
