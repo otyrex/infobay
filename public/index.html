@@ -75,19 +75,19 @@
           </select>
 
           <div class="flex items-center bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl p-0.5">
-            <button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'bg-royalblue-700 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-royalblue-600'" class="p-2 rounded-lg text-xs transition-all">
+            <button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'bg-royalblue-700 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-royalblue-600'" class="p-2 rounded-lg text-xs transition-all" title="Grid View">
               <i class="fa-solid fa-grip-vertical"></i>
             </button>
-            <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'bg-royalblue-700 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-royalblue-600'" class="p-2 rounded-lg text-xs transition-all">
+            <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'bg-royalblue-700 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-royalblue-600'" class="p-2 rounded-lg text-xs transition-all" title="List View">
               <i class="fa-solid fa-list-ul"></i>
             </button>
           </div>
 
-          <button @click="refreshAll" :disabled="loading" class="p-2.5 text-slate-700 dark:text-slate-200 hover:text-royalblue-700 dark:hover:text-white bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl transition-all disabled:opacity-50">
+          <button @click="refreshAll" :disabled="loading" class="p-2.5 text-slate-700 dark:text-slate-200 hover:text-royalblue-700 dark:hover:text-white bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl transition-all disabled:opacity-50" title="Refresh feeds">
             <i class="fa-solid fa-arrows-rotate text-xs" :class="{ 'fa-spin': loading }"></i>
           </button>
 
-          <button @click="toggleTheme" class="p-2.5 text-slate-700 dark:text-slate-200 bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl transition-all">
+          <button @click="toggleTheme" class="p-2.5 text-slate-700 dark:text-slate-200 bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl transition-all" title="Toggle Theme">
             <i class="fa-solid text-xs" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
           </button>
         </div>
@@ -95,7 +95,7 @@
       </div>
     </header>
 
-    <!-- Continuous Marquee -->
+    <!-- Continuous Headline Marquee Ticker -->
     <section class="bg-royalblue-900 text-white border-b border-royalblue-950 overflow-hidden py-2 marquee-container relative shadow-inner">
       <div class="flex items-center">
         <div class="z-10 bg-royalblue-600 px-3 py-1 ml-4 text-[11px] font-black uppercase tracking-wider rounded shadow flex items-center gap-2 shrink-0">
@@ -104,14 +104,14 @@
         
         <div class="flex overflow-hidden w-full whitespace-nowrap">
           <div class="inline-flex animate-marquee marquee-content items-center space-x-8 text-xs font-semibold text-slate-100 pl-4">
-            <span v-for="(item, idx) in marqueeArticles" :key="'m1-' + idx" class="inline-flex items-center">
+            <span v-for="(item, idx) in marqueeArticles" :key="'m1-' + idx" class="inline-flex items-center hover:text-white transition-colors">
               <a :href="item.link" target="_blank" class="hover:underline flex items-center gap-2">
                 <span class="text-royalblue-300 font-bold">[{{ item.source }}]</span>
                 <span>{{ item.title }}</span>
               </a>
               <span class="ml-8 text-royalblue-500">✦</span>
             </span>
-            <span v-for="(item, idx) in marqueeArticles" :key="'m2-' + idx" class="inline-flex items-center">
+            <span v-for="(item, idx) in marqueeArticles" :key="'m2-' + idx" class="inline-flex items-center hover:text-white transition-colors">
               <a :href="item.link" target="_blank" class="hover:underline flex items-center gap-2">
                 <span class="text-royalblue-300 font-bold">[{{ item.source }}]</span>
                 <span>{{ item.title }}</span>
@@ -123,112 +123,199 @@
       </div>
     </section>
 
-    <!-- Main Content Stream -->
+    <!-- Main Content Layout with Right Sidebar -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left Column: Main News Stream -->
         <div class="lg:col-span-8">
+          
+          <!-- Loading State -->
           <div v-if="loading" class="space-y-8 animate-pulse">
             <div class="h-80 bg-slate-300 dark:bg-darkcard rounded-3xl"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div v-for="i in 4" :key="i" class="bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-2xl h-80"></div>
+            </div>
           </div>
 
           <template v-else-if="uniqueArticles.length > 0">
-            <!-- Top Story Hero -->
+            <!-- Top Story Hero Section -->
             <section v-if="topStory" class="mb-8">
-              <div class="group relative bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-3xl overflow-hidden shadow-lg flex flex-col">
+              <div class="group relative bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col">
                 <div class="h-64 sm:h-80 relative overflow-hidden bg-slate-800">
-                  <img :src="topStory.uniqueImage" :alt="topStory.title" @error="e => onImageError(e, topStory)" class="w-full h-full object-cover">
+                  <img :src="topStory.uniqueImage" :alt="topStory.title" @error="e => onImageError(e, topStory)" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                   <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent"></div>
                   <div class="absolute top-4 left-4">
-                    <span class="px-3 py-1.5 text-xs font-black rounded-lg bg-royalblue-700 text-white uppercase">Top Story — {{ topStory.source }}</span>
+                    <span class="px-3 py-1.5 text-xs font-black rounded-lg bg-royalblue-700 text-white uppercase tracking-wider shadow-md border border-royalblue-500/50">
+                      Top Story — {{ topStory.source }}
+                    </span>
                   </div>
                 </div>
-                <div class="p-6 sm:p-8">
-                  <div class="text-xs font-bold text-royalblue-700 dark:text-royalblue-400 mb-3"><i class="fa-regular fa-clock"></i> {{ formatDate(topStory.pubDate) }}</div>
-                  <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-4">{{ topStory.title }}</h2>
-                  <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-6 font-medium">{{ topStory.snippet }}</p>
-                  <a :href="topStory.link" target="_blank" class="px-6 py-3 bg-royalblue-700 text-white text-xs font-bold rounded-xl inline-block">Read Full Story</a>
+                <div class="p-6 sm:p-8 flex flex-col justify-between bg-white dark:bg-darkcard">
+                  <div>
+                    <div class="text-xs font-bold text-royalblue-700 dark:text-royalblue-400 mb-3 flex items-center gap-2">
+                      <i class="fa-regular fa-clock"></i>
+                      {{ formatDate(topStory.pubDate) }}
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-snug mb-4 group-hover:text-royalblue-700 dark:group-hover:text-royalblue-400 transition-colors">
+                      {{ topStory.title }}
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-medium mb-6">
+                      {{ topStory.snippet }}
+                    </p>
+                  </div>
+                  <div>
+                    <a :href="topStory.link" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-royalblue-700 hover:bg-royalblue-800 text-white text-xs font-bold rounded-xl transition-all shadow-md hover:shadow-lg">
+                      Read Full Story <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"></i>
+                    </a>
+                  </div>
                 </div>
               </div>
             </section>
 
-            <!-- Articles Feed -->
+            <!-- Headlines Header -->
+            <div class="flex items-center justify-between mb-6 border-b border-slate-300 dark:border-darkborder pb-3">
+              <h2 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2.5">
+                <i class="fa-solid fa-layer-group text-royalblue-700 dark:text-royalblue-400"></i>
+                Latest Headlines
+              </h2>
+              <span class="text-xs font-bold text-slate-600 dark:text-slate-400">
+                Showing {{ remainingArticles.length }} items
+              </span>
+            </div>
+
+            <!-- GRID VIEW -->
             <div v-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <article v-for="(item, index) in remainingArticles" :key="'grid-' + index" class="bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-2xl overflow-hidden shadow-sm flex flex-col">
-                <div class="relative h-48 bg-slate-800">
-                  <img :src="item.uniqueImage" :alt="item.title" @error="e => onImageError(e, item)" class="w-full h-full object-cover">
-                  <div class="absolute top-3 left-3"><span class="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-royalblue-950/90 text-white">{{ item.source }}</span></div>
+              <article v-for="(item, index) in remainingArticles" :key="'grid-' + index" class="group bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder hover:border-royalblue-500/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                <div class="relative h-48 overflow-hidden bg-slate-800">
+                  <img :src="item.uniqueImage" :alt="item.title" @error="e => onImageError(e, item)" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
+                  <div class="absolute top-3 left-3">
+                    <span class="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-royalblue-950/90 text-white border border-royalblue-700/60 shadow">
+                      {{ item.source }}
+                    </span>
+                  </div>
                 </div>
                 <div class="p-5 flex flex-col flex-grow">
-                  <div class="text-xs text-slate-600 dark:text-slate-400 mb-2 font-bold"><i class="fa-regular fa-clock"></i> {{ formatDate(item.pubDate) }}</div>
-                  <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 leading-snug">{{ item.title }}</h3>
-                  <p class="text-xs text-slate-700 dark:text-slate-300 mb-4 flex-grow font-medium">{{ item.snippet }}</p>
-                  <a :href="item.link" target="_blank" class="text-xs font-bold text-royalblue-700 dark:text-royalblue-400">Read full story <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
+                  <div class="text-xs text-slate-600 dark:text-slate-400 mb-2 font-bold flex items-center gap-1.5">
+                    <i class="fa-regular fa-clock text-royalblue-700 dark:text-royalblue-400"></i>
+                    {{ formatDate(item.pubDate) }}
+                  </div>
+                  <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-royalblue-700 dark:group-hover:text-royalblue-400 transition-colors line-clamp-2 mb-2 leading-snug">
+                    {{ item.title }}
+                  </h3>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 line-clamp-3 mb-4 flex-grow leading-relaxed font-medium">
+                    {{ item.snippet }}
+                  </p>
+                  <a :href="item.link" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-xs font-bold text-royalblue-700 dark:text-royalblue-400 hover:text-royalblue-900 dark:hover:text-royalblue-300 transition-colors pt-3 border-t border-slate-200 dark:border-darkborder">
+                    Read full story <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-[10px]"></i>
+                  </a>
                 </div>
               </article>
             </div>
 
+            <!-- COMPACT LIST VIEW -->
             <div v-else class="space-y-3">
-              <article v-for="(item, index) in remainingArticles" :key="'list-' + index" class="bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-xl p-4 shadow-sm flex items-center justify-between gap-4">
+              <article v-for="(item, index) in remainingArticles" :key="'list-' + index" class="group bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder hover:border-royalblue-500/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all flex items-center justify-between gap-4">
                 <div class="flex items-center gap-4 flex-grow min-w-0">
-                  <img :src="item.uniqueImage" :alt="item.title" @error="e => onImageError(e, item)" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-800">
+                  <img :src="item.uniqueImage" :alt="item.title" @error="e => onImageError(e, item)" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-800" loading="lazy">
                   <div class="min-w-0 flex-grow">
                     <div class="flex items-center gap-2 mb-1">
-                      <span class="px-2 py-0.5 text-[10px] font-black rounded bg-royalblue-100 dark:bg-royalblue-950 text-royalblue-700 dark:text-royalblue-300 uppercase">{{ item.source }}</span>
-                      <span class="text-[11px] font-medium text-slate-500">{{ formatDate(item.pubDate) }}</span>
+                      <span class="px-2 py-0.5 text-[10px] font-black rounded bg-royalblue-100 dark:bg-royalblue-950 text-royalblue-700 dark:text-royalblue-300 uppercase">
+                        {{ item.source }}
+                      </span>
+                      <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                        {{ formatDate(item.pubDate) }}
+                      </span>
                     </div>
-                    <h3 class="text-sm font-bold text-slate-900 dark:text-white truncate">{{ item.title }}</h3>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-royalblue-700 dark:group-hover:text-royalblue-400 truncate transition-colors">
+                      {{ item.title }}
+                    </h3>
                   </div>
                 </div>
-                <a :href="item.link" target="_blank" class="p-2 text-slate-500 hover:text-royalblue-700 dark:hover:text-royalblue-400"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
+                <a :href="item.link" target="_blank" rel="noopener noreferrer" class="shrink-0 p-2 text-slate-500 hover:text-royalblue-700 dark:hover:text-royalblue-400 transition-colors" title="Read story">
+                  <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
               </article>
             </div>
           </template>
+
+          <!-- Empty State -->
+          <div v-else class="text-center py-20">
+            <div class="inline-flex p-4 rounded-full bg-white dark:bg-darkcard text-royalblue-700 dark:text-royalblue-400 mb-4 border border-slate-300 dark:border-darkborder shadow-sm">
+              <i class="fa-solid fa-newspaper text-3xl"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">No headlines found</h3>
+            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 font-medium">Try clearing your search query or selecting another feed source.</p>
+          </div>
+
         </div>
 
-        <!-- Right CVE Sidebar -->
+        <!-- Right Sidebar: Live CVE Threat Intelligence Tracker -->
         <aside class="lg:col-span-4 space-y-6">
           <div class="bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-2xl p-5 shadow-sm sticky top-24">
+            
             <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-darkborder">
               <div class="flex items-center space-x-2">
                 <span class="relative flex h-2.5 w-2.5">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
                 </span>
-                <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">Live CVE Tracker</h3>
+                <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
+                  Live CVE Tracker
+                </h3>
               </div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/50">REAL-TIME THREATS</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/50">
+                REAL-TIME THREATS
+              </span>
             </div>
 
-            <!-- CVE Cards Stream -->
+            <!-- Threat Stream Cards -->
             <div class="space-y-3.5 max-h-[700px] overflow-y-auto pr-1">
-              <div v-for="cve in liveThreats" :key="cve.id" class="p-3.5 rounded-xl border bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-darkborder hover:border-royalblue-500/50">
+              <div v-for="cve in liveThreats" :key="cve.id" class="p-3.5 rounded-xl border transition-all bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-darkborder hover:border-royalblue-500/50">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="font-mono text-xs font-bold text-royalblue-700 dark:text-royalblue-400">{{ cve.id }}</span>
-                  <span :class="getSeverityBadgeClass(cve.severity)" class="text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">{{ cve.severity }}</span>
+                  <span class="font-mono text-xs font-bold text-royalblue-700 dark:text-royalblue-400">
+                    {{ cve.id }}
+                  </span>
+                  <span :class="getSeverityBadgeClass(cve.severity)" class="text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">
+                    {{ cve.severity }}
+                  </span>
                 </div>
-                <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">{{ cve.title }}</h4>
-                <p class="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 mb-2.5 font-medium leading-relaxed">{{ cve.summary }}</p>
-                <div class="flex items-center justify-between text-[10px] text-slate-500 font-medium pt-2 border-t border-slate-200 dark:border-slate-800">
+
+                <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">
+                  {{ cve.title }}
+                </h4>
+
+                <p class="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed font-medium mb-2.5">
+                  {{ cve.summary }}
+                </p>
+
+                <div class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 font-medium pt-2 border-t border-slate-200/60 dark:border-slate-800">
                   <span>Target: <strong class="text-slate-700 dark:text-slate-300">{{ cve.vendor }}</strong></span>
-                  <a :href="cve.link" target="_blank" class="text-royalblue-600 dark:text-royalblue-400 font-bold hover:underline">Details <i class="fa-solid fa-angle-right text-[9px]"></i></a>
+                  <a :href="cve.link" target="_blank" class="text-royalblue-600 dark:text-royalblue-400 font-bold hover:underline">
+                    Details <i class="fa-solid fa-angle-right text-[9px]"></i>
+                  </a>
                 </div>
               </div>
             </div>
 
           </div>
         </aside>
+
       </div>
     </main>
 
-    <footer class="border-t border-slate-300 dark:border-darkborder bg-white dark:bg-darkcard py-6">
+    <!-- Footer -->
+    <footer class="border-t border-slate-300 dark:border-darkborder bg-white dark:bg-darkcard py-6 transition-colors">
       <div class="max-w-7xl mx-auto px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400">
         INFOBAY &copy; {{ currentYear }} — Real-Time Tech & Cybersecurity Intelligence Aggregator
       </div>
     </footer>
+
   </div>
 
   <script>
-    const { createApp, ref, computed, onMounted } = Vue;
+    const { createApp, ref, computed, onMounted, onUnmounted } = Vue;
 
     createApp({
       setup() {
@@ -242,6 +329,7 @@
         const currentDate = ref('');
         const currentTime = ref('');
         const currentYear = new Date().getFullYear();
+        let timer = null;
 
         const sources = ['TechCrunch', 'The Verge', 'Ars Technica', 'Hacker News', 'WIRED', 'MIT Tech Rev', 'Krebs Security', 'Engadget'];
 
@@ -361,6 +449,12 @@
           return generalTechImages[idx];
         };
 
+        const updateClock = () => {
+          const now = new Date();
+          currentDate.value = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          currentTime.value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        };
+
         const fetchFeeds = async () => {
           loading.value = true;
           assignedImages.clear();
@@ -415,7 +509,6 @@
         };
 
         const fetchLiveCVEs = async () => {
-          // Attempt 1: Query CISA KEV (Known Exploited Vulnerabilities) JSON Feed
           try {
             const cisaRes = await fetch('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json');
             const cisaData = await cisaRes.json();
@@ -436,7 +529,6 @@
             console.warn("CISA KEV fetch failed, trying NIST NVD RSS fallback...", e1);
           }
 
-          // Attempt 2: Query NIST NVD RSS Feed via Proxy
           try {
             const nvdFeedUrl = 'https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss.xml';
             const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(nvdFeedUrl)}`);
@@ -483,7 +575,6 @@
             console.warn("NIST RSS fetch failed, utilizing structured fallback dataset...", e2);
           }
 
-          // Attempt 3: Emergency Hardcoded Safety Fallback
           liveThreats.value = fallbackThreats;
         };
 
@@ -521,9 +612,13 @@
         const marqueeArticles = computed(() => articles.value.slice(0, 10));
 
         onMounted(() => {
-          currentDate.value = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-          currentTime.value = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+          updateClock();
+          timer = setInterval(updateClock, 1000);
           refreshAll();
+        });
+
+        onUnmounted(() => {
+          if (timer) clearInterval(timer);
         });
 
         return {
