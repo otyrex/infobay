@@ -16,37 +16,19 @@
           fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
           colors: {
             royalblue: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              200: '#c7d2fe',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af',
-              900: '#1e3a8a',
-              950: '#0f172a'
+              50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 500: '#3b82f6',
+              600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a', 950: '#0f172a'
             },
-            darkbg: '#090d16',
-            darkcard: '#111827',
-            darkborder: '#1e293b'
+            darkbg: '#090d16', darkcard: '#111827', darkborder: '#1e293b'
           },
-          animation: {
-            'marquee': 'marquee 38s linear infinite',
-          },
-          keyframes: {
-            marquee: {
-              '0%': { transform: 'translateX(0%)' },
-              '100%': { transform: 'translateX(-50%)' }
-            }
-          }
+          animation: { 'marquee': 'marquee 38s linear infinite' },
+          keyframes: { marquee: { '0%': { transform: 'translateX(0%)' }, '100%': { transform: 'translateX(-50%)' } } }
         }
       }
     }
   </script>
   <style>
-    .marquee-container:hover .marquee-content {
-      animation-play-state: paused;
-    }
+    .marquee-container:hover .marquee-content { animation-play-state: paused; }
   </style>
 </head>
 <body class="bg-slate-100 dark:bg-darkbg text-slate-900 dark:text-slate-100 min-h-screen font-sans antialiased transition-colors duration-200">
@@ -68,70 +50,37 @@
     <header class="sticky top-0 z-50 bg-white/95 dark:bg-darkcard/95 backdrop-blur-md border-b border-slate-300 dark:border-darkborder transition-colors shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row items-center justify-between gap-4">
         
-        <!-- INFOBAY Brand Title -->
         <div class="flex items-center">
-          <h1 
-            @click="selectedSource = 'ALL'; searchQuery = '';" 
-            class="text-3xl sm:text-4xl font-black tracking-tight text-royalblue-700 dark:text-royalblue-400 cursor-pointer select-none"
-          >
+          <h1 @click="selectedSource = 'ALL'; searchQuery = '';" class="text-3xl sm:text-4xl font-black tracking-tight text-royalblue-700 dark:text-royalblue-400 cursor-pointer select-none">
             INFOBAY
           </h1>
         </div>
 
-        <!-- Controls: Search, Source Filter, View Toggle, Refresh & Theme Toggle -->
         <div class="flex items-center space-x-2 sm:space-x-3 w-full md:w-auto">
           <div class="relative flex-grow md:w-64">
             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 text-xs"></i>
-            <input 
-              type="text" 
-              v-model="searchQuery" 
-              placeholder="Search news..." 
-              class="w-full pl-9 pr-3 py-2 bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl focus:outline-none focus:ring-2 focus:ring-royalblue-600 text-xs font-medium text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 transition-all"
-            >
+            <input type="text" v-model="searchQuery" placeholder="Search news..." class="w-full pl-9 pr-3 py-2 bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl focus:outline-none focus:ring-2 focus:ring-royalblue-600 text-xs font-medium text-slate-900 dark:text-white transition-all">
           </div>
 
-          <select 
-            v-model="selectedSource" 
-            class="bg-slate-200/80 dark:bg-slate-900/80 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-darkborder rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-royalblue-600 cursor-pointer transition-all"
-          >
+          <select v-model="selectedSource" class="bg-slate-200/80 dark:bg-slate-900/80 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-darkborder rounded-xl px-3 py-2 text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-royalblue-600 cursor-pointer transition-all">
             <option value="ALL">All Sources</option>
             <option v-for="source in sources" :key="source" :value="source">{{ source }}</option>
           </select>
 
-          <!-- Grid vs. List View Toggle -->
           <div class="flex items-center bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl p-0.5">
-            <button 
-              @click="viewMode = 'grid'" 
-              :class="viewMode === 'grid' ? 'bg-royalblue-700 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-royalblue-600'"
-              class="p-2 rounded-lg text-xs transition-all"
-              title="Grid View"
-            >
+            <button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'bg-royalblue-700 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-royalblue-600'" class="p-2 rounded-lg text-xs transition-all">
               <i class="fa-solid fa-grip-vertical"></i>
             </button>
-            <button 
-              @click="viewMode = 'list'" 
-              :class="viewMode === 'list' ? 'bg-royalblue-700 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-royalblue-600'"
-              class="p-2 rounded-lg text-xs transition-all"
-              title="List View"
-            >
+            <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'bg-royalblue-700 text-white shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-royalblue-600'" class="p-2 rounded-lg text-xs transition-all">
               <i class="fa-solid fa-list-ul"></i>
             </button>
           </div>
 
-          <button 
-            @click="fetchFeeds" 
-            :disabled="loading" 
-            class="p-2.5 text-slate-700 dark:text-slate-200 hover:text-royalblue-700 dark:hover:text-white bg-slate-200/80 dark:bg-slate-900/80 hover:bg-slate-300 dark:hover:bg-slate-800 border border-slate-300 dark:border-darkborder rounded-xl transition-all disabled:opacity-50"
-            title="Refresh feeds"
-          >
+          <button @click="refreshAll" :disabled="loading" class="p-2.5 text-slate-700 dark:text-slate-200 hover:text-royalblue-700 dark:hover:text-white bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl transition-all disabled:opacity-50">
             <i class="fa-solid fa-arrows-rotate text-xs" :class="{ 'fa-spin': loading }"></i>
           </button>
 
-          <button 
-            @click="toggleTheme" 
-            class="p-2.5 text-slate-700 dark:text-slate-200 hover:text-amber-600 dark:hover:text-amber-400 bg-slate-200/80 dark:bg-slate-900/80 hover:bg-slate-300 dark:hover:bg-slate-800 border border-slate-300 dark:border-darkborder rounded-xl transition-all"
-            title="Toggle Light/Dark Theme"
-          >
+          <button @click="toggleTheme" class="p-2.5 text-slate-700 dark:text-slate-200 bg-slate-200/80 dark:bg-slate-900/80 border border-slate-300 dark:border-darkborder rounded-xl transition-all">
             <i class="fa-solid text-xs" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
           </button>
         </div>
@@ -139,24 +88,23 @@
       </div>
     </header>
 
-    <!-- Continuous Headline Marquee Ticker -->
+    <!-- Continuous Marquee -->
     <section class="bg-royalblue-900 text-white border-b border-royalblue-950 overflow-hidden py-2 marquee-container relative shadow-inner">
       <div class="flex items-center">
         <div class="z-10 bg-royalblue-600 px-3 py-1 ml-4 text-[11px] font-black uppercase tracking-wider rounded shadow flex items-center gap-2 shrink-0">
-          <span class="w-2 h-2 rounded-full bg-red-400 animate-ping"></span>
-          Headline
+          <span class="w-2 h-2 rounded-full bg-red-400 animate-ping"></span> Headline
         </div>
         
         <div class="flex overflow-hidden w-full whitespace-nowrap">
           <div class="inline-flex animate-marquee marquee-content items-center space-x-8 text-xs font-semibold text-slate-100 pl-4">
-            <span v-for="(item, idx) in marqueeArticles" :key="'m1-' + idx" class="inline-flex items-center hover:text-white transition-colors">
+            <span v-for="(item, idx) in marqueeArticles" :key="'m1-' + idx" class="inline-flex items-center">
               <a :href="item.link" target="_blank" class="hover:underline flex items-center gap-2">
                 <span class="text-royalblue-300 font-bold">[{{ item.source }}]</span>
                 <span>{{ item.title }}</span>
               </a>
               <span class="ml-8 text-royalblue-500">✦</span>
             </span>
-            <span v-for="(item, idx) in marqueeArticles" :key="'m2-' + idx" class="inline-flex items-center hover:text-white transition-colors">
+            <span v-for="(item, idx) in marqueeArticles" :key="'m2-' + idx" class="inline-flex items-center">
               <a :href="item.link" target="_blank" class="hover:underline flex items-center gap-2">
                 <span class="text-royalblue-300 font-bold">[{{ item.source }}]</span>
                 <span>{{ item.title }}</span>
@@ -168,264 +116,108 @@
       </div>
     </section>
 
-    <!-- Main Content Layout with Right Sidebar -->
+    <!-- Main Content Stream -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-        <!-- Left Main News Stream Column -->
         <div class="lg:col-span-8">
-
-          <!-- Skeleton Loading State -->
           <div v-if="loading" class="space-y-8 animate-pulse">
             <div class="h-80 bg-slate-300 dark:bg-darkcard rounded-3xl"></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div v-for="i in 4" :key="i" class="bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-2xl h-80"></div>
-            </div>
           </div>
 
           <template v-else-if="uniqueArticles.length > 0">
-            <!-- Top Story Hero Section -->
+            <!-- Top Story Hero -->
             <section v-if="topStory" class="mb-8">
-              <div class="group relative bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 flex flex-col">
-                
+              <div class="group relative bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-3xl overflow-hidden shadow-lg flex flex-col">
                 <div class="h-64 sm:h-80 relative overflow-hidden bg-slate-800">
-                  <img 
-                    :src="topStory.uniqueImage" 
-                    :alt="topStory.title"
-                    @error="e => onImageError(e, topStory)"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  >
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent"></div>
+                  <img :src="topStory.uniqueImage" :alt="topStory.title" @error="e => onImageError(e, topStory)" class="w-full h-full object-cover">
+                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent"></div>
                   <div class="absolute top-4 left-4">
-                    <span class="px-3 py-1.5 text-xs font-black rounded-lg bg-royalblue-700 text-white uppercase tracking-wider shadow-md border border-royalblue-500/50">
-                      Top Story — {{ topStory.source }}
-                    </span>
+                    <span class="px-3 py-1.5 text-xs font-black rounded-lg bg-royalblue-700 text-white uppercase">Top Story — {{ topStory.source }}</span>
                   </div>
                 </div>
-
-                <div class="p-6 sm:p-8 flex flex-col justify-between bg-white dark:bg-darkcard">
-                  <div>
-                    <div class="text-xs font-bold text-royalblue-700 dark:text-royalblue-400 mb-3 flex items-center gap-2">
-                      <i class="fa-regular fa-clock"></i>
-                      {{ formatDate(topStory.pubDate) }}
-                    </div>
-                    <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-snug mb-4 group-hover:text-royalblue-700 dark:group-hover:text-royalblue-400 transition-colors">
-                      {{ topStory.title }}
-                    </h2>
-                    <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 line-clamp-3 leading-relaxed font-medium mb-6">
-                      {{ topStory.snippet }}
-                    </p>
-                  </div>
-
-                  <div>
-                    <a 
-                      :href="topStory.link" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      class="inline-flex items-center justify-center w-full sm:w-auto px-6 py-3 bg-royalblue-700 hover:bg-royalblue-800 text-white text-xs font-bold rounded-xl transition-all shadow-md hover:shadow-lg"
-                    >
-                      Read Full Story
-                      <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-xs"></i>
-                    </a>
-                  </div>
+                <div class="p-6 sm:p-8">
+                  <div class="text-xs font-bold text-royalblue-700 dark:text-royalblue-400 mb-3"><i class="fa-regular fa-clock"></i> {{ formatDate(topStory.pubDate) }}</div>
+                  <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white mb-4">{{ topStory.title }}</h2>
+                  <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-6 font-medium">{{ topStory.snippet }}</p>
+                  <a :href="topStory.link" target="_blank" class="px-6 py-3 bg-royalblue-700 text-white text-xs font-bold rounded-xl inline-block">Read Full Story</a>
                 </div>
-
               </div>
             </section>
 
-            <!-- Headlines Feed Header -->
-            <div class="flex items-center justify-between mb-6 border-b border-slate-300 dark:border-darkborder pb-3">
-              <h2 class="text-lg font-black text-slate-900 dark:text-white flex items-center gap-2.5">
-                <i class="fa-solid fa-layer-group text-royalblue-700 dark:text-royalblue-400"></i>
-                Latest Headlines
-              </h2>
-              <span class="text-xs font-bold text-slate-600 dark:text-slate-400">
-                Showing {{ remainingArticles.length }} items
-              </span>
-            </div>
-
-            <!-- GRID VIEW MODE -->
+            <!-- Articles Feed -->
             <div v-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <article 
-                v-for="(item, index) in remainingArticles" 
-                :key="'grid-' + index"
-                class="group bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder hover:border-royalblue-500/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"
-              >
-                <div class="relative h-48 overflow-hidden bg-slate-800">
-                  <img 
-                    :src="item.uniqueImage" 
-                    :alt="item.title"
-                    @error="e => onImageError(e, item)"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  >
-                  <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
-                  <div class="absolute top-3 left-3">
-                    <span class="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-royalblue-950/90 text-white border border-royalblue-700/60 shadow">
-                      {{ item.source }}
-                    </span>
-                  </div>
+              <article v-for="(item, index) in remainingArticles" :key="'grid-' + index" class="bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-2xl overflow-hidden shadow-sm flex flex-col">
+                <div class="relative h-48 bg-slate-800">
+                  <img :src="item.uniqueImage" :alt="item.title" @error="e => onImageError(e, item)" class="w-full h-full object-cover">
+                  <div class="absolute top-3 left-3"><span class="px-2.5 py-1 text-xs font-extrabold rounded-lg bg-royalblue-950/90 text-white">{{ item.source }}</span></div>
                 </div>
-
                 <div class="p-5 flex flex-col flex-grow">
-                  <div class="text-xs text-slate-600 dark:text-slate-400 mb-2 font-bold flex items-center gap-1.5">
-                    <i class="fa-regular fa-clock text-royalblue-700 dark:text-royalblue-400"></i>
-                    {{ formatDate(item.pubDate) }}
-                  </div>
-                  
-                  <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-royalblue-700 dark:group-hover:text-royalblue-400 transition-colors line-clamp-2 mb-2 leading-snug">
-                    {{ item.title }}
-                  </h3>
-                  
-                  <p class="text-xs text-slate-700 dark:text-slate-300 line-clamp-3 mb-4 flex-grow leading-relaxed font-medium">
-                    {{ item.snippet }}
-                  </p>
-
-                  <a 
-                    :href="item.link" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    class="inline-flex items-center text-xs font-bold text-royalblue-700 dark:text-royalblue-400 hover:text-royalblue-900 dark:hover:text-royalblue-300 transition-colors pt-3 border-t border-slate-200 dark:border-darkborder"
-                  >
-                    Read full story
-                    <i class="fa-solid fa-arrow-up-right-from-square ml-2 text-[10px]"></i>
-                  </a>
+                  <div class="text-xs text-slate-600 dark:text-slate-400 mb-2 font-bold"><i class="fa-regular fa-clock"></i> {{ formatDate(item.pubDate) }}</div>
+                  <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2 leading-snug">{{ item.title }}</h3>
+                  <p class="text-xs text-slate-700 dark:text-slate-300 mb-4 flex-grow font-medium">{{ item.snippet }}</p>
+                  <a :href="item.link" target="_blank" class="text-xs font-bold text-royalblue-700 dark:text-royalblue-400">Read full story <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>
                 </div>
               </article>
             </div>
 
-            <!-- COMPACT LIST VIEW MODE -->
             <div v-else class="space-y-3">
-              <article 
-                v-for="(item, index) in remainingArticles" 
-                :key="'list-' + index"
-                class="group bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder hover:border-royalblue-500/80 rounded-xl p-4 shadow-sm hover:shadow-md transition-all flex items-center justify-between gap-4"
-              >
+              <article v-for="(item, index) in remainingArticles" :key="'list-' + index" class="bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-xl p-4 shadow-sm flex items-center justify-between gap-4">
                 <div class="flex items-center gap-4 flex-grow min-w-0">
-                  <img 
-                    :src="item.uniqueImage" 
-                    :alt="item.title"
-                    @error="e => onImageError(e, item)"
-                    class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-800"
-                    loading="lazy"
-                  >
+                  <img :src="item.uniqueImage" :alt="item.title" @error="e => onImageError(e, item)" class="w-16 h-16 rounded-lg object-cover shrink-0 bg-slate-800">
                   <div class="min-w-0 flex-grow">
                     <div class="flex items-center gap-2 mb-1">
-                      <span class="px-2 py-0.5 text-[10px] font-black rounded bg-royalblue-100 dark:bg-royalblue-950 text-royalblue-700 dark:text-royalblue-300 uppercase">
-                        {{ item.source }}
-                      </span>
-                      <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                        {{ formatDate(item.pubDate) }}
-                      </span>
+                      <span class="px-2 py-0.5 text-[10px] font-black rounded bg-royalblue-100 dark:bg-royalblue-950 text-royalblue-700 dark:text-royalblue-300 uppercase">{{ item.source }}</span>
+                      <span class="text-[11px] font-medium text-slate-500">{{ formatDate(item.pubDate) }}</span>
                     </div>
-                    <h3 class="text-sm font-bold text-slate-900 dark:text-white group-hover:text-royalblue-700 dark:group-hover:text-royalblue-400 truncate transition-colors">
-                      {{ item.title }}
-                    </h3>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white truncate">{{ item.title }}</h3>
                   </div>
                 </div>
-
-                <a 
-                  :href="item.link" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  class="shrink-0 p-2 text-slate-500 hover:text-royalblue-700 dark:hover:text-royalblue-400 transition-colors"
-                  title="Read story"
-                >
-                  <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-                </a>
+                <a :href="item.link" target="_blank" class="p-2 text-slate-500 hover:text-royalblue-700 dark:hover:text-royalblue-400"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
               </article>
             </div>
           </template>
-
-          <!-- Empty State -->
-          <div v-else class="text-center py-20">
-            <div class="inline-flex p-4 rounded-full bg-white dark:bg-darkcard text-royalblue-700 dark:text-royalblue-400 mb-4 border border-slate-300 dark:border-darkborder shadow-sm">
-              <i class="fa-solid fa-newspaper text-3xl"></i>
-            </div>
-            <h3 class="text-lg font-extrabold text-slate-900 dark:text-white">No headlines found</h3>
-            <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 font-medium">Try clearing your search query or selecting another feed source.</p>
-          </div>
-
         </div>
 
-        <!-- RIGHT SIDEBAR: Live CVE & Threat Intelligence Tracker -->
+        <!-- Right CVE Sidebar -->
         <aside class="lg:col-span-4 space-y-6">
           <div class="bg-white dark:bg-darkcard border border-slate-300 dark:border-darkborder rounded-2xl p-5 shadow-sm sticky top-24">
-            
             <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-200 dark:border-darkborder">
               <div class="flex items-center space-x-2">
                 <span class="relative flex h-2.5 w-2.5">
                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                   <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
                 </span>
-                <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">
-                  Live CVE Tracker
-                </h3>
+                <h3 class="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">Live CVE Tracker</h3>
               </div>
-              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/50">
-                REAL-TIME THREATS
-              </span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-900/50">REAL-TIME THREATS</span>
             </div>
 
-            <!-- Threat Stream Cards -->
+            <!-- CVE Cards Stream -->
             <div class="space-y-3.5 max-h-[700px] overflow-y-auto pr-1">
-              <div 
-                v-for="cve in liveThreats" 
-                :key="cve.id"
-                class="p-3.5 rounded-xl border transition-all bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-darkborder hover:border-royalblue-500/50"
-              >
+              <div v-for="cve in liveThreats" :key="cve.id" class="p-3.5 rounded-xl border bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-darkborder hover:border-royalblue-500/50">
                 <div class="flex items-center justify-between mb-2">
-                  <span class="font-mono text-xs font-bold text-royalblue-700 dark:text-royalblue-400">
-                    {{ cve.id }}
-                  </span>
-                  <span 
-                    :class="getSeverityBadgeClass(cve.severity)"
-                    class="text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider"
-                  >
-                    {{ cve.severity }}
-                  </span>
+                  <span class="font-mono text-xs font-bold text-royalblue-700 dark:text-royalblue-400">{{ cve.id }}</span>
+                  <span :class="getSeverityBadgeClass(cve.severity)" class="text-[9px] font-black px-2 py-0.5 rounded uppercase">{{ cve.severity }}</span>
                 </div>
-
-                <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">
-                  {{ cve.title }}
-                </h4>
-
-                <p class="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 leading-relaxed font-medium mb-2.5">
-                  {{ cve.summary }}
-                </p>
-
-                <div class="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 font-medium pt-2 border-t border-slate-200/60 dark:border-slate-800">
+                <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">{{ cve.title }}</h4>
+                <p class="text-[11px] text-slate-600 dark:text-slate-400 line-clamp-2 mb-2.5 font-medium">{{ cve.summary }}</p>
+                <div class="flex items-center justify-between text-[10px] text-slate-500 font-medium pt-2 border-t border-slate-200 dark:border-slate-800">
                   <span>Target: <strong class="text-slate-700 dark:text-slate-300">{{ cve.vendor }}</strong></span>
-                  <a :href="cve.link" target="_blank" class="text-royalblue-600 dark:text-royalblue-400 hover:underline font-bold">
-                    Details <i class="fa-solid fa-angle-right text-[9px]"></i>
-                  </a>
+                  <a :href="cve.link" target="_blank" class="text-royalblue-600 dark:text-royalblue-400 font-bold hover:underline">Details <i class="fa-solid fa-angle-right text-[9px]"></i></a>
                 </div>
               </div>
             </div>
 
           </div>
         </aside>
-
       </div>
     </main>
 
-    <!-- Scroll To Top Button -->
-    <button 
-      v-show="showScrollTop" 
-      @click="scrollToTop" 
-      class="fixed bottom-6 right-6 p-3 bg-royalblue-700 hover:bg-royalblue-800 text-white rounded-full shadow-lg transition-all duration-300 z-50 focus:outline-none"
-      title="Scroll to top"
-    >
-      <i class="fa-solid fa-arrow-up text-sm"></i>
-    </button>
-
-    <!-- Footer -->
-    <footer class="border-t border-slate-300 dark:border-darkborder bg-white dark:bg-darkcard py-6 transition-colors">
+    <footer class="border-t border-slate-300 dark:border-darkborder bg-white dark:bg-darkcard py-6">
       <div class="max-w-7xl mx-auto px-4 text-center text-xs font-semibold text-slate-600 dark:text-slate-400">
         INFOBAY &copy; {{ currentYear }} — Real-Time Tech & Cybersecurity Intelligence Aggregator
       </div>
     </footer>
-
   </div>
 
   <script>
@@ -434,6 +226,7 @@
     createApp({
       setup() {
         const articles = ref([]);
+        const liveThreats = ref([]);
         const loading = ref(true);
         const searchQuery = ref('');
         const selectedSource = ref('ALL');
@@ -441,318 +234,199 @@
         const isDark = ref(false);
         const currentDate = ref('');
         const currentTime = ref('');
-        const showScrollTop = ref(false);
         const currentYear = new Date().getFullYear();
         let timer = null;
 
         const sources = ['TechCrunch', 'The Verge', 'Ars Technica', 'Hacker News', 'WIRED', 'MIT Tech Rev', 'Krebs Security', 'Engadget'];
 
-        const liveThreats = ref([
-          {
-            id: 'CVE-2026-2819',
-            title: 'Linux Kernel Remote Code Execution in eBPF Subsystem',
-            severity: 'CRITICAL',
-            vendor: 'Linux Kernel',
-            summary: 'An out-of-bounds write vulnerability allows unauthenticated remote attackers to execute arbitrary code with root privileges.',
-            link: 'https://nvd.nist.gov'
-          },
-          {
-            id: 'CVE-2026-1044',
-            title: 'Cisco IOS XE Web UI Authentication Bypass',
-            severity: 'CRITICAL',
-            vendor: 'Cisco Systems',
-            summary: 'Privilege escalation flaw allows attackers to create administrative accounts on vulnerable enterprise networking hardware.',
-            link: 'https://nvd.nist.gov'
-          },
-          {
-            id: 'CVE-2026-3392',
-            title: 'Windows NTLM Relay Authentication Vulnerability',
-            severity: 'HIGH',
-            vendor: 'Microsoft',
-            summary: 'Improper validation in NTLM authentication protocol enables domain credential relaying across active directory domains.',
-            link: 'https://nvd.nist.gov'
-          },
-          {
-            id: 'CVE-2026-0812',
-            title: 'Chrome V8 Engine Type Confusion Exploit',
-            severity: 'HIGH',
-            vendor: 'Google Chrome',
-            summary: 'Active zero-day exploitation detected in the wild targeting browser memory management during web worker execution.',
-            link: 'https://nvd.nist.gov'
-          },
-          {
-            id: 'CVE-2026-4410',
-            title: 'OpenSSL Memory Leak Denial of Service',
-            severity: 'MEDIUM',
-            vendor: 'OpenSSL Org',
-            summary: 'Resource exhaustion vulnerability when parsing specifically crafted X.509 TLS client certificates.',
-            link: 'https://nvd.nist.gov'
-          }
-        ]);
-
-        const getSeverityBadgeClass = (severity) => {
-          switch (severity) {
-            case 'CRITICAL':
-              return 'bg-red-500 text-white shadow-sm';
-            case 'HIGH':
-              return 'bg-amber-500 text-white shadow-sm';
-            case 'MEDIUM':
-              return 'bg-blue-600 text-white shadow-sm';
-            default:
-              return 'bg-slate-600 text-white';
+        const getSeverityBadgeClass = (sev) => {
+          switch (sev) {
+            case 'CRITICAL': return 'bg-red-500 text-white';
+            case 'HIGH': return 'bg-amber-500 text-white';
+            case 'MEDIUM': return 'bg-blue-600 text-white';
+            default: return 'bg-slate-600 text-white';
           }
         };
 
         const categoryImageMap = [
           {
-            keywords: ['ovary', 'menopause', 'health', 'biotech', 'dna', 'genetics', 'medical', 'medicine', 'brain', 'cancer', 'cell', 'disease', 'vaccine', 'biology', 'doctor', 'organ', 'hospital', 'patient', 'egg', 'body', 'scientist', 'scientific'],
-            images: [
-              'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80'
-            ]
+            keywords: ['ovary', 'health', 'biotech', 'dna', 'genetics', 'medical', 'medicine', 'cancer', 'vaccine', 'hospital'],
+            images: ['https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&q=80']
           },
           {
-            keywords: ['security', 'hack', 'hacker', 'vulnerability', 'malware', 'ransomware', 'cyber', 'exploit', 'breach', 'krebs', 'password', 'encryption', 'phishing', 'threat', 'attack', 'zero-day', 'firewall'],
-            images: [
-              'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&w=800&q=80'
-            ]
+            keywords: ['security', 'hack', 'hacker', 'vulnerability', 'malware', 'cyber', 'exploit', 'breach', 'threat'],
+            images: ['https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80']
           },
           {
-            keywords: ['ai', 'artificial intelligence', 'gpt', 'llm', 'chatgpt', 'openai', 'claude', 'neural', 'machine learning', 'deepseek', 'gemini', 'robot', 'automation'],
-            images: [
-              'https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80'
-            ]
-          },
-          {
-            keywords: ['chip', 'semiconductor', 'nvidia', 'intel', 'amd', 'processor', 'hardware', 'gpu', 'cpu', 'motherboard', 'tsmc', 'silicon', 'transistor'],
-            images: [
-              'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=800&q=80'
-            ]
-          },
-          {
-            keywords: ['iphone', 'apple', 'android', 'samsung', 'mobile', 'phone', 'smartphone', 'app', 'ios'],
-            images: [
-              'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=800&q=80',
-              'https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?auto=format&fit=crop&w=800&q=80'
-            ]
+            keywords: ['ai', 'gpt', 'llm', 'chatgpt', 'openai', 'claude', 'neural', 'gemini'],
+            images: ['https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80']
           }
         ];
 
         const generalTechImages = [
           'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80'
+          'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80'
         ];
 
         const getContextualImage = (title, snippet) => {
-          const textToAnalyze = `${title} ${snippet}`.toLowerCase();
-          for (const category of categoryImageMap) {
-            const hasMatch = category.keywords.some(keyword => textToAnalyze.includes(keyword));
-            if (hasMatch) {
-              let hash = 0;
-              for (let i = 0; i < textToAnalyze.length; i++) {
-                hash = textToAnalyze.charCodeAt(i) + ((hash << 5) - hash);
-              }
-              const index = Math.abs(hash) % category.images.length;
-              return category.images[index];
+          const text = `${title} ${snippet}`.toLowerCase();
+          for (const cat of categoryImageMap) {
+            if (cat.keywords.some(k => text.includes(k))) {
+              return cat.images[0];
             }
           }
           return null;
         };
 
-        const getFallbackImage = (title, snippet) => {
-          const textToAnalyze = `${title} ${snippet}`.toLowerCase();
+        const getFallbackImage = (title) => {
           let hash = 0;
-          for (let i = 0; i < textToAnalyze.length; i++) {
-            hash = textToAnalyze.charCodeAt(i) + ((hash << 5) - hash);
-          }
-          const fallbackIdx = Math.abs(hash) % generalTechImages.length;
-          return generalTechImages[fallbackIdx];
-        };
-
-        const toggleTheme = () => {
-          isDark.value = !isDark.value;
-          if (isDark.value) {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
-        };
-
-        const updateClock = () => {
-          const now = new Date();
-          currentDate.value = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-          currentTime.value = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        };
-
-        const handleScroll = () => {
-          showScrollTop.value = window.scrollY > 300;
-        };
-
-        const scrollToTop = () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          for (let i = 0; i < title.length; i++) hash = title.charCodeAt(i) + ((hash << 5) - hash);
+          return generalTechImages[Math.abs(hash) % generalTechImages.length];
         };
 
         const fetchFeeds = async () => {
           loading.value = true;
           try {
-            // Primary: Fetch full aggregated RSS feed directly from testbay cPanel API
             const res = await fetch('https://testbay.midhubsolutions.com/api.php');
-            if (!res.ok) throw new Error('Primary cPanel API responded with an error');
-            
+            if (!res.ok) throw new Error('API offline');
             const data = await res.json();
             if (Array.isArray(data) && data.length > 0) {
               articles.value = data;
             } else {
-              throw new Error('Primary API returned empty dataset');
+              throw new Error('Empty dataset');
             }
           } catch (err) {
-            console.warn("Primary cPanel API fetch failed, executing full multi-feed client fallback...", err);
-            
+            console.warn("Primary API offline, running multi-source client fetcher...", err);
             const feedList = [
               { name: 'TechCrunch', url: 'https://techcrunch.com/feed/' },
               { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml' },
               { name: 'Ars Technica', url: 'https://feeds.arstechnica.com/arstechnica/index' },
-              { name: 'Hacker News', url: 'https://news.ycombinator.com/rss' },
               { name: 'WIRED', url: 'https://www.wired.com/feed/rss' },
               { name: 'Krebs Security', url: 'https://krebsonsecurity.com/feed/' }
             ];
 
-            let loadedArticles = [];
-
+            let loaded = [];
             for (const feed of feedList) {
               try {
-                const jsonApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`;
-                const fallbackRes = await fetch(jsonApiUrl);
-                const data = await fallbackRes.json();
-
-                if (data && data.status === 'ok' && Array.isArray(data.items)) {
+                const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`);
+                const data = await res.json();
+                if (data && data.items) {
                   data.items.slice(0, 4).forEach(item => {
-                    if (item.title && item.link) {
-                      const desc = (item.description || item.content || '')
-                        .replace(/<[^>]*>?/gm, '')
-                        .substring(0, 130) + '...';
-
-                      loadedArticles.push({
-                        title: item.title.trim(),
-                        link: item.link.trim(),
-                        pubDate: item.pubDate || new Date().toISOString(),
-                        snippet: desc,
-                        source: feed.name,
-                        image: item.thumbnail || '',
-                        timestamp: new Date(item.pubDate).getTime() || Date.now()
-                      });
-                    }
+                    loaded.push({
+                      title: item.title,
+                      link: item.link,
+                      pubDate: item.pubDate,
+                      snippet: (item.description || '').replace(/<[^>]*>?/gm, '').substring(0, 130) + '...',
+                      source: feed.name,
+                      image: item.thumbnail || '',
+                      timestamp: new Date(item.pubDate).getTime() || Date.now()
+                    });
                   });
                 }
-              } catch (singleFeedErr) {
-                console.warn(`Fallback parsing failed for ${feed.name}:`, singleFeedErr);
+              } catch (e) {
+                console.warn(`Failed to parse ${feed.name}:`, e);
               }
             }
-
-            if (loadedArticles.length > 0) {
-              loadedArticles.sort((a, b) => b.timestamp - a.timestamp);
-              articles.value = loadedArticles;
-            } else {
-              console.error("All fetch attempts and client fallbacks failed.");
+            if (loaded.length > 0) {
+              loaded.sort((a, b) => b.timestamp - a.timestamp);
+              articles.value = loaded;
             }
           } finally {
             loading.value = false;
           }
         };
 
-        const onImageError = (event, item) => {
-          event.target.src = getContextualImage(item.title, item.snippet || '') || getFallbackImage(item.title, item.snippet || '');
+        const fetchLiveCVEs = async () => {
+          try {
+            const nvdFeedUrl = 'https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss.xml';
+            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(nvdFeedUrl)}`);
+            const data = await res.json();
+
+            if (data && data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
+              liveThreats.value = data.items.slice(0, 6).map(item => {
+                const cveMatch = item.title.match(/CVE-\d{4}-\d+/i);
+                const cveId = cveMatch ? cveMatch[0].toUpperCase() : 'CVE ALERT';
+                const summary = (item.description || '').replace(/<[^>]*>?/gm, '');
+
+                let severity = 'HIGH';
+                if (/critical|rce|remote code/i.test(summary)) severity = 'CRITICAL';
+                if (/medium|denial of service/i.test(summary)) severity = 'MEDIUM';
+
+                return {
+                  id: cveId,
+                  title: item.title.replace(cveId, '').replace(/^[:\s-]+/, '').trim() || 'Vulnerability Detected',
+                  severity: severity,
+                  vendor: 'NIST NVD',
+                  summary: summary.substring(0, 120) + '...',
+                  link: item.link || 'https://nvd.nist.gov'
+                };
+              });
+            } else {
+              throw new Error('NVD Feed unavailable');
+            }
+          } catch (err) {
+            console.warn("NVD live feed unreachable, loading CISA security advisory stream...", err);
+            try {
+              const cisaRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://www.cisa.gov/cybersecurity-advisories/all.xml'));
+              const cisaData = await cisaRes.json();
+              if (cisaData && cisaData.items) {
+                liveThreats.value = cisaData.items.slice(0, 5).map(i => ({
+                  id: 'CISA ALERT',
+                  title: i.title,
+                  severity: 'HIGH',
+                  vendor: 'CISA Security',
+                  summary: (i.description || '').replace(/<[^>]*>?/gm, '').substring(0, 120) + '...',
+                  link: i.link
+                }));
+              }
+            } catch (cisaErr) {
+              console.error("All CVE threat streams failed:", cisaErr);
+            }
+          }
         };
 
-        const formatDate = (dateString) => {
-          if (!dateString) return '';
-          const date = new Date(dateString);
-          return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const refreshAll = () => {
+          fetchFeeds();
+          fetchLiveCVEs();
         };
+
+        const toggleTheme = () => {
+          isDark.value = !isDark.value;
+          document.documentElement.classList.toggle('dark', isDark.value);
+        };
+
+        const formatDate = (str) => str ? new Date(str).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+        const onImageError = (e, item) => { e.target.src = getContextualImage(item.title, item.snippet) || getFallbackImage(item.title); };
 
         const filteredArticles = computed(() => {
           return articles.value.filter(item => {
             const matchesSource = selectedSource.value === 'ALL' || item.source === selectedSource.value;
-            const matchesQuery = item.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                                 (item.snippet && item.snippet.toLowerCase().includes(searchQuery.value.toLowerCase()));
+            const matchesQuery = item.title.toLowerCase().includes(searchQuery.value.toLowerCase());
             return matchesSource && matchesQuery;
           });
         });
 
         const uniqueArticles = computed(() => {
-          const usedImages = new Set();
-          return filteredArticles.value.map((article) => {
-            let img = article.image;
-            const contextualMatch = getContextualImage(article.title, article.snippet || '');
-
-            if (contextualMatch) {
-              img = contextualMatch;
-            } else if (!img || usedImages.has(img) || img.includes('picsum.photos') || img.includes('placeholder')) {
-              img = getFallbackImage(article.title, article.snippet || '');
-            }
-
-            usedImages.add(img);
-
-            return {
-              ...article,
-              uniqueImage: img
-            };
-          });
+          return filteredArticles.value.map(article => ({
+            ...article,
+            uniqueImage: getContextualImage(article.title, article.snippet) || article.image || getFallbackImage(article.title)
+          }));
         });
 
-        const topStory = computed(() => uniqueArticles.value.length > 0 ? uniqueArticles.value[0] : null);
+        const topStory = computed(() => uniqueArticles.value[0] || null);
         const remainingArticles = computed(() => uniqueArticles.value.slice(1));
         const marqueeArticles = computed(() => articles.value.slice(0, 10));
 
         onMounted(() => {
-          document.documentElement.classList.remove('dark');
-          updateClock();
-          timer = setInterval(updateClock, 1000);
-          window.addEventListener('scroll', handleScroll);
-          fetchFeeds();
-        });
-
-        onUnmounted(() => {
-          if (timer) clearInterval(timer);
-          window.removeEventListener('scroll', handleScroll);
+          currentDate.value = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+          currentTime.value = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+          refreshAll();
         });
 
         return {
-          articles,
-          loading,
-          searchQuery,
-          selectedSource,
-          sources,
-          viewMode,
-          isDark,
-          currentDate,
-          currentTime,
-          showScrollTop,
-          currentYear,
-          liveThreats,
-          getSeverityBadgeClass,
-          toggleTheme,
-          scrollToTop,
-          fetchFeeds,
-          onImageError,
-          formatDate,
-          filteredArticles,
-          uniqueArticles,
-          topStory,
-          remainingArticles,
-          marqueeArticles
+          articles, liveThreats, loading, searchQuery, selectedSource, sources, viewMode, isDark,
+          currentDate, currentTime, currentYear, getSeverityBadgeClass, refreshAll, toggleTheme,
+          formatDate, onImageError, uniqueArticles, topStory, remainingArticles, marqueeArticles
         };
       }
     }).mount('#app');
