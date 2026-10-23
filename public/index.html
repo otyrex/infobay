@@ -102,9 +102,9 @@
     <!-- Continuous Headline Marquee Ticker -->
     <section class="bg-royalblue-900 text-white border-b border-royalblue-950 overflow-hidden py-2 marquee-container relative shadow-inner">
       <div class="flex items-center">
-       <div class="z-10 bg-royalblue-600 px-3 py-1 ml-4 text-[11px] font-black uppercase tracking-wider rounded shadow flex items-center shrink-0">
+        <div class="z-10 bg-royalblue-600 px-3 py-1 ml-4 text-[11px] font-black uppercase tracking-wider rounded shadow flex items-center shrink-0">
           Headline
-        </div>>
+        </div>
         
         <div class="flex overflow-hidden w-full whitespace-nowrap">
           <div class="inline-flex animate-marquee marquee-content items-center space-x-8 text-xs font-semibold text-slate-100 pl-4">
@@ -275,9 +275,14 @@
                   <span class="font-mono text-xs font-bold text-royalblue-700 dark:text-royalblue-400">
                     {{ cve.id }}
                   </span>
-                  <span :class="getSeverityBadgeClass(cve.severity)" class="text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">
-                    {{ cve.severity }}
-                  </span>
+                  <div class="flex items-center gap-1.5">
+                    <span v-if="cve.dateAdded" class="text-[9px] font-semibold text-slate-500 dark:text-slate-400 bg-slate-200/80 dark:bg-slate-800 px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-700" title="Date Identified / Published">
+                      <i class="fa-regular fa-calendar mr-1"></i>{{ cve.dateAdded }}
+                    </span>
+                    <span :class="getSeverityBadgeClass(cve.severity)" class="text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider">
+                      {{ cve.severity }}
+                    </span>
+                  </div>
                 </div>
 
                 <h4 class="text-xs font-bold text-slate-900 dark:text-slate-100 mb-1.5 leading-snug">
@@ -333,44 +338,49 @@
 
         const fallbackThreats = [
           {
-            id: 'CVE-2026-2819',
-            title: 'Linux Kernel Remote Code Execution in eBPF Subsystem',
+            id: 'CVE-2026-109619',
+            title: 'PHP "php2shell" Memory Corruption Use-After-Free RCE',
             severity: 'CRITICAL',
-            vendor: 'Linux Kernel',
-            summary: 'An out-of-bounds write vulnerability allows unauthenticated remote attackers to execute arbitrary code with root privileges.',
-            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-2819'
+            vendor: 'PHP Group',
+            summary: 'A critical state management flaw in PHP allows unauthenticated remote attackers to execute arbitrary code on web servers handling HTTP requests.',
+            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-109619',
+            dateAdded: 'Oct 21, 2026'
           },
           {
-            id: 'CVE-2026-1044',
-            title: 'Cisco IOS XE Web UI Authentication Bypass',
+            id: 'CVE-2026-96652',
+            title: 'Plex Media Server Server-Side Request Forgery (SSRF)',
+            severity: 'HIGH',
+            vendor: 'Plex Inc.',
+            summary: 'Active exploitation detected where attackers bypass network isolation to deploy unauthorized crypto-miners and proxy malware.',
+            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-96652',
+            dateAdded: 'Oct 20, 2026'
+          },
+          {
+            id: 'CVE-2026-76519',
+            title: 'Cisco Secure Email Gateway Relative Path Traversal',
             severity: 'CRITICAL',
             vendor: 'Cisco Systems',
-            summary: 'Privilege escalation flaw allows attackers to create administrative accounts on vulnerable enterprise networking hardware.',
-            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-1044'
+            summary: 'Path traversal flaw allows remote unauthenticated attackers to write arbitrary files and execute commands with root privileges.',
+            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-76519',
+            dateAdded: 'Oct 14, 2026'
           },
           {
-            id: 'CVE-2026-3392',
-            title: 'Windows NTLM Relay Authentication Vulnerability',
+            id: 'CVE-2026-106931',
+            title: 'EG Secure Solutions SiteGuard OS Command Injection',
             severity: 'HIGH',
-            vendor: 'Microsoft',
-            summary: 'Improper validation in NTLM authentication protocol enables domain credential relaying across active directory domains.',
-            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-3392'
+            vendor: 'EG Secure Solutions',
+            summary: 'Command injection vulnerability in SiteGuard Server Edition allows remote execution of arbitrary system commands.',
+            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-106931',
+            dateAdded: 'Oct 13, 2026'
           },
           {
-            id: 'CVE-2026-0812',
-            title: 'Chrome V8 Engine Type Confusion Exploit',
+            id: 'CVE-2026-110936',
+            title: 'Siemens Software Center Uncontrolled Search Path Sideloading',
             severity: 'HIGH',
-            vendor: 'Google Chrome',
-            summary: 'Active zero-day exploitation detected in the wild targeting browser memory management during web worker execution.',
-            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-0812'
-          },
-          {
-            id: 'CVE-2026-4410',
-            title: 'OpenSSL Memory Leak Denial of Service',
-            severity: 'MEDIUM',
-            vendor: 'OpenSSL Org',
-            summary: 'Resource exhaustion vulnerability when parsing specifically crafted X.509 TLS client certificates.',
-            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-4410'
+            vendor: 'Siemens',
+            summary: 'DLL sideloading weakness actively exploited in ClickFix malware campaigns targeting enterprise engineering workstations.',
+            link: 'https://nvd.nist.gov/vuln/detail/CVE-2026-110936',
+            dateAdded: 'Oct 12, 2026'
           }
         ];
 
@@ -513,64 +523,26 @@
             
             if (cisaData && Array.isArray(cisaData.vulnerabilities) && cisaData.vulnerabilities.length > 0) {
               const latestVulns = cisaData.vulnerabilities.slice(-6).reverse();
-              liveThreats.value = latestVulns.map(v => ({
-                id: v.cveID,
-                title: v.vulnerabilityName || `${v.vendorProject} ${v.product} Flaw`,
-                severity: 'CRITICAL',
-                vendor: v.vendorProject || 'Enterprise System',
-                summary: (v.shortDescription || '').substring(0, 130) + '...',
-                link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`
-              }));
+              liveThreats.value = latestVulns.map(v => {
+                let formattedDate = 'Recent';
+                if (v.dateAdded) {
+                  const d = new Date(v.dateAdded);
+                  formattedDate = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                }
+                return {
+                  id: v.cveID,
+                  title: v.vulnerabilityName || `${v.vendorProject} ${v.product} Flaw`,
+                  severity: 'CRITICAL',
+                  vendor: v.vendorProject || 'Enterprise System',
+                  summary: (v.shortDescription || '').substring(0, 130) + '...',
+                  link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`,
+                  dateAdded: formattedDate
+                };
+              });
               return;
             }
           } catch (e1) {
-            console.warn("CISA KEV fetch failed, trying NIST NVD RSS fallback...", e1);
-          }
-
-          try {
-            const nvdFeedUrl = 'https://nvd.nist.gov/feeds/xml/cve/misc/nvd-rss.xml';
-            const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(nvdFeedUrl)}`);
-            const data = await res.json();
-
-            if (data && data.status === 'ok' && Array.isArray(data.items) && data.items.length > 0) {
-              const parsedCVEs = [];
-
-              data.items.forEach(item => {
-                const titleStr = item.title || '';
-                const summaryStr = (item.description || item.content || '').replace(/<[^>]*>?/gm, '').trim();
-                const cveMatch = titleStr.match(/CVE-\d{4}-\d+/i) || summaryStr.match(/CVE-\d{4}-\d+/i);
-                
-                if (cveMatch) {
-                  const cveId = cveMatch[0].toUpperCase();
-                  
-                  let vendor = 'Hardware/OS';
-                  if (/cisco/i.test(titleStr + summaryStr)) vendor = 'Cisco Systems';
-                  else if (/linux|kernel/i.test(titleStr + summaryStr)) vendor = 'Linux Kernel';
-                  else if (/windows|microsoft/i.test(titleStr + summaryStr)) vendor = 'Microsoft';
-                  else if (/chrome|google/i.test(titleStr + summaryStr)) vendor = 'Google Chrome';
-
-                  let severity = 'HIGH';
-                  if (/critical|remote code execution|rce/i.test(summaryStr)) severity = 'CRITICAL';
-                  else if (/medium|denial of service/i.test(summaryStr)) severity = 'MEDIUM';
-
-                  parsedCVEs.push({
-                    id: cveId,
-                    title: titleStr.replace(cveId, '').replace(/^[:\s-]+/, '').trim() || 'Vulnerability Alert',
-                    severity: severity,
-                    vendor: vendor,
-                    summary: summaryStr.substring(0, 130) + '...',
-                    link: `https://nvd.nist.gov/vuln/detail/${cveId}`
-                  });
-                }
-              });
-
-              if (parsedCVEs.length > 0) {
-                liveThreats.value = parsedCVEs.slice(0, 6);
-                return;
-              }
-            }
-          } catch (e2) {
-            console.warn("NIST RSS fetch failed, utilizing structured fallback dataset...", e2);
+            console.warn("CISA KEV stream unreachable, using fresh Fallback Dataset...", e1);
           }
 
           liveThreats.value = fallbackThreats;
